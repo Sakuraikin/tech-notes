@@ -1,11 +1,11 @@
-const { v4: uuid } = require('uuid')
+const crypto = require('crypto')
 const fs = require('fs')
 const fsPromises = require('fs').promises
 const path = require('path')
 
 const logEvents = async (msg, fileName) => {
     const dateTime = new Date().toLocaleString()
-    const thisLog = `${ dateTime }\t${ uuid() }\t${ msg }\n`
+    const thisLog = `${ dateTime }\t${ crypto.randomUUID() }\t${ msg }\n`
 
     try {
         if (!fs.existsSync(path.join(__dirname, '..', 'logs'))) {

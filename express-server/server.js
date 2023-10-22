@@ -4,12 +4,15 @@ const path = require("path")
 const { eventLogger } = require('./middleware/eventLogger')
 const errorHandler = require('./middleware/errrorHandler')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 const PORT = process.env.PORT || 3500
 
 // Middleware
-app.use(eventLogger)
-app.use(express.json())
-app.use(cookieParser)
+app.use(eventLogger,
+    express.json(),
+    cors(),
+    cookieParser()
+    )
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
 app.all('*', (req, res) => {
