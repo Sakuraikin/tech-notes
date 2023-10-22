@@ -21,6 +21,7 @@ const eventLogger = (req, res, next) => {
 
     // TODO: Add conditional(s) so that every single request isn't logged.
     logEvents(`${req.method}\t${req.url}\t${req.headers.origin}`, reqLog.log)
+    console.log(`${req.method} ${req.path}`)
     next()
 }
 
