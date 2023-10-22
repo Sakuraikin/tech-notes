@@ -12,6 +12,8 @@ app.all('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'views', 'notFound.html'))
     } else if (req.accepts('json')) {
         res.json({message: "404 Page Not Found"})
+    } else {
+        res.type('text').send('404 Not Found')
     }
 })
 
