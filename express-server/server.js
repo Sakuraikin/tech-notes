@@ -1,3 +1,4 @@
+// package & function imports
 const express = require("express")
 const app = express()
 const path = require("path")
@@ -25,7 +26,8 @@ app.all('*', (req, res) => {
         res.type('text').send('404 Not Found')
     }
 })
+// If errors occur within middleware, handle them appropriately
 app.use(errorHandler)
 
-// Server startup
+// Listen for requests on assigned port
 app.listen(PORT, () => console.log(`Express server is running on port ${PORT}`))
