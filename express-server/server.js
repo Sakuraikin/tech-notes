@@ -4,7 +4,8 @@ const path = require("path")
 const PORT = process.env.PORT || 3500
 
 // Middleware
-app.use('/', express.static(path.join(__dirname, '/public')))
+app.use(express.json())
+app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
 app.all('*', (req, res) => {
     res.status(404)
