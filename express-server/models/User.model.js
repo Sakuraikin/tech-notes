@@ -36,7 +36,7 @@ UserSchema.pre('validate', (next) => {
     next()
 })
 
-// Save User
+// Hash password and reset password value to hash value before saving
 UserSchema.pre('save', (next) => {
     bcrypt.hash(this.password, 10)
         .then((hash) => {
