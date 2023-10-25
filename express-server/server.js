@@ -14,7 +14,6 @@ const corsOptions = require('./config/corsOptions')
 const PORT = process.env.PORT || 3500
 
 // Middleware
-// console.log(process.env.NODE_ENV)
 app.use(eventLogger,
     express.json(),
     cors(corsOptions),
@@ -35,7 +34,7 @@ app.all('*', (req, res) => {
 // If errors occur within middleware, handle them appropriately
 app.use(errorHandler)
 
-// Listen for requests on assigned port
+// Create HTTPS server, listen for requests on assigned port
 https
     .createServer({
         key: fs.readFileSync("localhost+3-key.pem"),
