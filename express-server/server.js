@@ -1,4 +1,6 @@
 // package & function imports
+require('dotenv').config()
+require('./config/mongoose.config')
 const express = require("express")
 const app = express()
 const path = require("path")
@@ -10,6 +12,7 @@ const corsOptions = require('./config/corsOptions')
 const PORT = process.env.PORT || 3500
 
 // Middleware
+console.log(process.env.NODE_ENV)
 app.use(eventLogger,
     express.json(),
     cors(corsOptions),
