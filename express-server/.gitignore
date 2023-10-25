@@ -1,2 +1,5 @@
+localhost+3-key
+localhost+3
 node_modules
 logs
+.env
