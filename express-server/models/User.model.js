@@ -23,4 +23,27 @@ const UserSchema = new mongoose.Schema({
     }
 }, {timestamps: true})
 
+// * Mongoose Middleware
+// Set virtual confirmPassword field to value in form input
+UserSchema.virtual('confirmPassword')
+    .get(() => this.confirmPassword)
+    .set(val => this.confirmPassword = val)
+
+// Validate that passwords match
+UserSchema.pre('validate', (next) => {
+    if (this.password !== this.confirmPassword) {
+        this.invalidate(('confirmPassword', 'Passwords must match'))
+    }
+    next()
+})
+
+// Save User
+UserSchema.pre('save', (next) => {
+    bcrypt.hash(this.password, 10)
+        .then((hash) => {
+            this.password = hash
+            next()
+        })
+})
+
 module.exports = mongoose.model('User', UserSchema)
