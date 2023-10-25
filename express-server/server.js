@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3500
 // Middleware
 app.use(eventLogger,
     express.json(),
+    express.urlencoded({extended: true}),
     cors(corsOptions),
     cookieParser()
     )
