@@ -19,3 +19,12 @@ body {
     place-content: center;
     padding: 1rem;
 }
+
+h1 {
+    text-align: center;
+    margin: 0 0 1rem;
+}
+
+p {
+    text-align: center;
+}
