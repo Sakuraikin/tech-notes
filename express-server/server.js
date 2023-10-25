@@ -1,6 +1,8 @@
 // package & function imports
 require('dotenv').config()
 require('./config/mongoose.config')
+const https = require('https')
+const fs = require('fs')
 const express = require("express")
 const app = express()
 const path = require("path")
@@ -12,7 +14,7 @@ const corsOptions = require('./config/corsOptions')
 const PORT = process.env.PORT || 3500
 
 // Middleware
-console.log(process.env.NODE_ENV)
+// console.log(process.env.NODE_ENV)
 app.use(eventLogger,
     express.json(),
     cors(corsOptions),
@@ -34,4 +36,11 @@ app.all('*', (req, res) => {
 app.use(errorHandler)
 
 // Listen for requests on assigned port
-app.listen(PORT, () => console.log(`Express server is running on port ${PORT}`))
+https
+    .createServer({
+        key: fs.readFileSync("localhost+3-key.pem"),
+        cert: fs.readFileSync("localhost+3.pem")
+    }, app)
+        .listen(PORT, () => {
+            console.log(`Express server is running on port ${PORT}`)
+        })
