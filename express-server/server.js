@@ -23,7 +23,7 @@ app.use(eventLogger,
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
 
-// Todo: Fix bug causing POST requests to receive 404 page in response
+// Todo: Fix bug causing POST requests to respond with 404 page
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
