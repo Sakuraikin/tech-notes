@@ -6,12 +6,13 @@ const { eventLogger } = require('./middleware/eventLogger')
 const errorHandler = require('./middleware/errrorHandler')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const corsOptions = require('./config/corsOptions')
 const PORT = process.env.PORT || 3500
 
 // Middleware
 app.use(eventLogger,
     express.json(),
-    cors(),
+    cors(corsOptions),
     cookieParser()
     )
 app.use('/', express.static(path.join(__dirname, 'public')))
