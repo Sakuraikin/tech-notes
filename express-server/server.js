@@ -22,6 +22,8 @@ app.use(eventLogger,
     )
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
+
+// Todo: Fix bug causing POST requests to receive 404 page in response
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
@@ -34,6 +36,9 @@ app.all('*', (req, res) => {
 })
 // If errors occur within middleware, handle them appropriately
 app.use(errorHandler)
+
+const UserRoutes = require('./routes/user.routes')
+UserRoutes(app)
 
 // Create HTTPS server, listen for requests on assigned port
 https
