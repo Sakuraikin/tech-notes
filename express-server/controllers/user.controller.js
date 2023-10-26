@@ -49,7 +49,38 @@ const createUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    
+    const { id, username, roles, isActive, password } = req.body
+
+    // Validate data that isn't already validated in mongoose model
+    if (!id || !Array.isArray(roles) || typeof isActive !== 'boolean'){
+        return res.status(400).json({message: "All fields are required"})
+    }
+
+    const user = await User.findById(id).exec()
+
+    if (!user) {
+        return res.status(400).json({message: "Specified user doesn't exist"})
+    }
+
+    // Make sure duplicates don't exist
+    const potentialUpdatedUser = await User.findOne({ username }).lean().exec()
+
+    // Allow updates to ORIGINAL user
+    if (potentialUpdatedUser && potentialUpdatedUser?._id.toString() !== id) {
+        return res.status(409).json({message: "Someone else is using that username. Please try again."})
+    }
+
+    user.username = username
+    user.roles = roles
+    user.isActive = isActive
+
+    if (password !== user.password) {
+        user.password = await bcrypt.hash(password, 10)
+    }
+
+    const updatedUser = await user.save()
+
+    res.json({message: `${updatedUser.username} updated`})
 })
 
 

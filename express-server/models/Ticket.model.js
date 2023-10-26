@@ -26,7 +26,7 @@ const TicketSchema = new mongoose.Schema({
 
 TicketSchema.plugin(AutoIncrement, {
     inc_field: 'ticket',
-    id: ticketNums,
+    id: 'ticketNums',
     start_seq: 4269
 })
 
