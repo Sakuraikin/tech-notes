@@ -37,8 +37,17 @@ const createUser = asyncHandler(async (req, res) => {
     // ! Password hashing built into mongoose model ( .pre() middleware )
 
     const newUser = await User.create({ username, password, roles })
+
     if (newUser) {
-        res.status(201).json({message: `New user ${username} created`})
+        res.status(201).json({message: `New user ${username} created`,
+        createdUser: {
+            id: newUser._id,
+            username: newUser.username,
+            roles: newUser.roles,
+            isActive: newUser.isActive,
+            createdAt: newUser.createdAt
+        }
+    })
     } else {
         res.status(400).json({message: "User could not be created"})
     }
