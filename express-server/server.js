@@ -24,7 +24,6 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
 app.use('/users', require('./routes/user.routes'))
 
-// Todo: Fix bug causing POST requests to respond with 404 page
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
