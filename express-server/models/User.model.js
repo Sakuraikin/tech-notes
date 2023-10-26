@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     roles: [{
         type: String,
         required: [true, "User must have at least one role assigned"],
-        default: "employee"
+        default: ["employee"]
     }],
     isActive: {
         type: Boolean,
@@ -39,12 +39,10 @@ UserSchema.pre('validate', (next) => {
 })
 
 // Hash password and reset password value to hash value before saving
-UserSchema.pre('save', (next) => {
-    bcrypt.hash(this.password, 10)
-        .then((hash) => {
-            this.password = hash
-            next()
-        })
+UserSchema.pre('save', async function(next) {
+    const hash = await bcrypt.hash(this.password, 10)
+    this.password = hash
+    next()
 })
 
 module.exports = mongoose.model('user', UserSchema)
