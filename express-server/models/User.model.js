@@ -27,11 +27,17 @@ const UserSchema = new mongoose.Schema({
 // * Mongoose Middleware
 // Set virtual confirmPassword field to value in form input
 UserSchema.virtual('confirmPassword')
-    .get(() => this.confirmPassword)
-    .set(val => this.confirmPassword = val)
+    // .get(() => this.confirmPassword)
+    // .set(val => this.confirmPassword = val)
+    .get(function(){
+        this.confirmPassword
+    })
+    .set(function(val){
+        this.confirmPassword = val
+    })
 
 // Validate that passwords match
-UserSchema.pre('validate', (next) => {
+UserSchema.pre('validate', function(next) {
     if (this.password !== this.confirmPassword) {
         this.invalidate(('confirmPassword', 'Passwords must match'))
     }
