@@ -12,11 +12,11 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         minLength: [12, "Password must be at least 12 characters"]
     },
-    roles: [{
-        type: String,
+    roles: {
+        type: [String],
         required: [true, "User must have at least one role assigned"],
         default: ["employee"]
-    }],
+    },
     isActive: {
         type: Boolean,
         required: [true, "User must have an isActive status assigned"],
