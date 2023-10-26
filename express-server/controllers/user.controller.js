@@ -11,7 +11,7 @@ const asyncHandler = require('express-async-handler')
 // @access Private
 const getAllUsers = asyncHandler(async (req, res) => {
     const allUsers = await User.find().select('-password').lean()
-    if (!allUsers) {
+    if (!allUsers?.length) {
         return res.status(400).json({message: "No users exist yet"})
     }
     res.json(allUsers)
