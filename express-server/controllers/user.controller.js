@@ -92,7 +92,27 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route DELETE /users
 // @access Private
 const removeUser = asyncHandler(async (req, res) => {
-    
+    const { id } = req.body
+    if (!id) {
+        return res.status(400).json({message: "User ID is required"})
+    }
+    const tickets = await Ticket.findOne({
+        user: id
+    }).lean().exec()
+
+    if (tickets?.length) {
+        return res.status(400).json({message: "Unable to delete users with open tickets assigned"})
+    }
+
+    const user = await User.findById(id).exec()
+
+    if (!user) {
+        return res.status(400).json({message: "User not found"})
+    }
+
+    const result = await user.deleteOne()
+    const reply = `Username ${result.username} deleted successfully`
+    res.status(200).json(reply)
 })
 
 module.exports = {
