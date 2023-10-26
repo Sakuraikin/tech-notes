@@ -52,7 +52,7 @@ const updateUser = asyncHandler(async (req, res) => {
     const { id, username, roles, isActive, password } = req.body
 
     // Validate data that isn't already validated in mongoose model
-    if (!id || !Array.isArray(roles) || typeof isActive !== 'boolean'){
+    if (!id || !Array.isArray(roles) || !roles.length || typeof isActive !== 'boolean'){
         return res.status(400).json({message: "All fields are required"})
     }
 
@@ -65,7 +65,7 @@ const updateUser = asyncHandler(async (req, res) => {
     // Make sure duplicates don't exist
     const potentialUpdatedUser = await User.findOne({ username }).lean().exec()
 
-    // Allow updates to ORIGINAL user
+    // Only allow updates to original user
     if (potentialUpdatedUser && potentialUpdatedUser?._id.toString() !== id) {
         return res.status(409).json({message: "Someone else is using that username. Please try again."})
     }
@@ -73,14 +73,18 @@ const updateUser = asyncHandler(async (req, res) => {
     user.username = username
     user.roles = roles
     user.isActive = isActive
-
-    if (password !== user.password) {
-        user.password = await bcrypt.hash(password, 10)
-    }
+    user.password = password
 
     const updatedUser = await user.save()
 
-    res.json({message: `${updatedUser.username} updated`})
+    res.status(200).json({message: `${updatedUser.username} updated successfully`, updatedUser: {
+        _id: updatedUser.id,
+        username: updatedUser.username,
+        roles: updatedUser.roles,
+        isActive: updatedUser.isActive,
+        createdAt: updatedUser.createdAt,
+        updatedAt: updatedUser.updatedAt
+    }})
 })
 
 
