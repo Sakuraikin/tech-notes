@@ -14,10 +14,12 @@ const UserSchema = new mongoose.Schema({
     },
     roles: [{
         type: String,
+        required: [true, "User must have at least one role assigned"],
         default: "employee"
     }],
     isActive: {
         type: Boolean,
+        required: [true, "User must have an isActive status assigned"],
         default: true
     }
 }, {timestamps: true})
