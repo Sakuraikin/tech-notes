@@ -1,5 +1,5 @@
-localhost+3-key.pem
-localhost+3.pem
+localhost.key
+localhost.pem
 node_modules
 logs
 .env
