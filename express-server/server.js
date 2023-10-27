@@ -23,6 +23,7 @@ app.use(eventLogger,
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
 app.use('/users', require('./routes/user.routes'))
+app.use('/tickets', require('./routes/ticket.routes'))
 
 app.all('*', (req, res) => {
     res.status(404)
