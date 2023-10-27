@@ -25,7 +25,21 @@ const getAllTickets = asyncHandler(async(req, res) => {
 // @route POST /tickets
 // @access Private
 const createTicket = asyncHandler(async(req, res) => {
-    
+    // Get user, title, and body from 'create ticket' form
+    const { user, title, body } = req.body
+
+    // Ensure ticket title doesn't already exist
+    const potentialTicket = await Ticket.findOne({ title }).lean().exec()
+    if (potentialTicket) {
+        res.status(409).json({message: "Ticket title is already in use"})
+    }
+    // Create new ticket and include it in response
+    const newTicket = await Ticket.create({user, title, body})
+    if (newTicket) {
+        return res.status(201).json(newTicket)
+    }
+    // If ticket can't be created, respond with 400 bad request
+    res.status(400).json({message: "Ticket could not be created"})
 })
 
 // @desc Update ticket
