@@ -80,7 +80,18 @@ const updateTicket = asyncHandler(async(req, res) => {
 // @route DELETE /tickets
 // @access Private
 const removeTicket = asyncHandler(async(req, res) => {
+    const { id } = req.body
+    if (!id) {
+        return res.status(400).json({message: "Ticket ID is required"})
+    }
+    const ticket = await Ticket.findById(id).exec()
+    if (!ticket) {
+        return res.status(400).json({message: "Ticket not found"})
+    }
 
+    const result = await ticket.deleteOne()
+    const reply = `Ticket ${result.title} with ID ${result._id}`
+    res.json(reply)
 })
 
 module.exports = {
