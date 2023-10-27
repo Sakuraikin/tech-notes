@@ -6,7 +6,11 @@ const asyncHandler = require('express-async-handler')
 // @route GET /tickets
 // @access Private
 const getAllTickets = asyncHandler(async(req, res) => {
-
+    const allTickets = await Ticket.find().lean()
+    if (!allTickets?.length) {
+        return res.status(400).json({message: "No tickets exist yet"})
+    }
+    res.json(allUsers)
 })
 
 // @desc Create a ticket
