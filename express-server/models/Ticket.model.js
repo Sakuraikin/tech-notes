@@ -4,7 +4,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose)
 const TicketSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        required: [true, "Ticket must be assigned to a user"],
         ref: 'User'
     },
     title: {
