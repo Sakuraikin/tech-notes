@@ -26,6 +26,13 @@ const updateTicket = asyncHandler(async(req, res) => {
 // @desc Delete ticket
 // @route DELETE /tickets
 // @access Private
-const deleteTicket = asyncHandler(async(req, res) => {
+const removeTicket = asyncHandler(async(req, res) => {
 
 })
+
+module.exports = {
+    getAllTickets,
+    createTicket,
+    updateTicket,
+    removeTicket
+}
