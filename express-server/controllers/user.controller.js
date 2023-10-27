@@ -105,11 +105,11 @@ const removeUser = asyncHandler(async (req, res) => {
     if (!id) {
         return res.status(400).json({message: "User ID is required"})
     }
-    const tickets = await Ticket.findOne({
+    const ticket = await Ticket.findOne({
         user: id
     }).lean().exec()
 
-    if (tickets?.length) {
+    if (ticket) {
         return res.status(400).json({message: "Unable to delete users with open tickets assigned"})
     }
 
