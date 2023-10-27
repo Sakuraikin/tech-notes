@@ -46,7 +46,34 @@ const createTicket = asyncHandler(async(req, res) => {
 // @route PATCH /tickets
 // @access Private
 const updateTicket = asyncHandler(async(req, res) => {
+    const { id, user, title, body, isComplete } = req.body
+    if (!id || typeof isComplete !== 'boolean') {
+        return res.status(400).json({message: "All ticket fields are required"})
+    }
 
+    // Ensure that ticket exists before trying to update
+    const ticket = await Ticket.findById(id).exec()
+    if (!ticket) {
+        return res.status(400).json({message: "Specified ticket doesn't exist"})
+    }
+
+    // Ensure ticket title isn't taken
+    const potentialUpdatedTicket = await Ticket.findOne({title}).lean().exec()
+    
+    // Allow only original ticket to be modified
+    if (potentialUpdatedTicket && potentialUpdatedTicket?._id.toString() !== id) {
+        return res.status(409).json({message: "Ticket title is already in use"})
+    }
+
+    // Update ticket with new values from form
+    ticket.user = user
+    ticket.title = title
+    ticket.body = body
+    ticket.isComplete = isComplete
+
+    // Save update(s) to ticket and respond with a message and the updated ticket
+    const updatedTicket = await ticket.save()
+    res.status(200).json({message: `${updatedTicket.title} updated successfully`, updatedTicket})
 })
 
 // @desc Delete ticket
