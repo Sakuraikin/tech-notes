@@ -10,14 +10,22 @@ const getAllTickets = asyncHandler(async(req, res) => {
     if (!allTickets?.length) {
         return res.status(400).json({message: "No tickets exist yet"})
     }
-    res.json(allUsers)
+
+    const allTicketsWithUser = await Promise.all(
+        allTickets.map(async(ticket) => {
+            const user = await User.findById(ticket.user).lean().exec()
+            return {...ticket, username: user.username}
+        })
+    )
+
+    res.json(allTicketsWithUser)
 })
 
 // @desc Create a ticket
 // @route POST /tickets
 // @access Private
 const createTicket = asyncHandler(async(req, res) => {
-
+    
 })
 
 // @desc Update ticket
