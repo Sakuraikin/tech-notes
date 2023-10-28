@@ -1,6 +1,3 @@
-// ! HIGH PRIORITY
-// ToDo: Create new self-signed SSL certificate
-
 // package & function imports
 require('dotenv').config()
 require('./config/mongoose.config')
@@ -44,8 +41,8 @@ app.use(errorHandler)
 // Create HTTPS server, listen for requests on assigned port
 https
     .createServer({
-        key: fs.readFileSync("localhost.key"),
-        cert: fs.readFileSync("localhost.pem")
+        key: fs.readFileSync("./ssl/dev-cert+3-key.pem"),
+        cert: fs.readFileSync("./ssl/dev-cert+3.pem")
     }, app)
         .listen(PORT, () => {
             console.log(`Express server is running on port ${PORT}`)

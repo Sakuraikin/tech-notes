@@ -1,5 +1,4 @@
-localhost.key
-localhost.pem
+/ssl
 node_modules
 logs
 .env
