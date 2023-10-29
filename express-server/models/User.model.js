@@ -21,7 +21,11 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         required: [true, "User must have an isActive status assigned"],
         default: true
-    }
+    },
+    tickets: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Ticket"
+    }]
 }, {timestamps: true})
 
 // * Mongoose Middleware

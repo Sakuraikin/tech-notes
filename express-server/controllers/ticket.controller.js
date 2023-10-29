@@ -24,22 +24,39 @@ const getAllTickets = asyncHandler(async(req, res) => {
 // @desc Create a ticket
 // @route POST /tickets
 // @access Private
-const createTicket = asyncHandler(async(req, res) => {
-    // Get user, title, and body from 'create ticket' form
-    const { user, title, body } = req.body
 
-    // Ensure ticket title doesn't already exist
-    const potentialTicket = await Ticket.findOne({ title }).lean().exec()
-    if (potentialTicket) {
-        res.status(409).json({message: "Ticket title is already in use"})
+const createTicket = asyncHandler(async(req, res) => {
+    try {
+        const { user, title, body } = req.body
+        if (!user || !title || !body){
+            res.status(400).json({message: "All fields are required"})
+        }
+        const potentialTicket = await Ticket.findOne({ title })
+        if (potentialTicket) {
+            return res.status(409).json({error: {
+                errors: {
+                    title: {
+                        message: "That ticket title already exists. Please choose a different title."
+                    }
+                }
+            }})
+        } else {
+            const newTicket = await Ticket.create(req.body)
+
+            // Update user's tickets by pushing newly created ticket into their tickets array
+            try {
+                await User.findOneAndUpdate( {_id: req.body.user}, {$push: {tickets: newTicket}})
+                // Send back response with new Ticket
+                return res.status(201).json(newTicket)
+            }  catch(err) {
+                console.log(err)
+                res.status(400).json({message: "Ticket was created, but couldn't be related to a User", error: err})
+            }
+        }
+    } catch(err) {
+        console.log(err)
+        res.status(400).json({message: "Unable to create album", error: err})
     }
-    // Create new ticket and include it in response
-    const newTicket = await Ticket.create({user, title, body})
-    if (newTicket) {
-        return res.status(201).json(newTicket)
-    }
-    // If ticket can't be created, respond with 400 bad request
-    res.status(400).json({message: "Ticket could not be created"})
 })
 
 // @desc Update ticket
@@ -96,7 +113,8 @@ const removeTicket = asyncHandler(async(req, res) => {
 
 module.exports = {
     getAllTickets,
-    createTicket,
+    // createNewTicket,
     updateTicket,
-    removeTicket
+    removeTicket,
+    createTicket
 }

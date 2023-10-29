@@ -20,6 +20,8 @@ app.use(eventLogger,
     cors(corsOptions),
     cookieParser()
     )
+
+// Routing
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
 app.use('/users', require('./routes/user.routes'))
