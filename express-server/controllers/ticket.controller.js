@@ -24,7 +24,6 @@ const getAllTickets = asyncHandler(async(req, res) => {
 // @desc Create a ticket
 // @route POST /tickets
 // @access Private
-
 const createTicket = asyncHandler(async(req, res) => {
     try {
         const { user, title, body } = req.body
@@ -45,9 +44,16 @@ const createTicket = asyncHandler(async(req, res) => {
 
             // Update user's tickets by pushing newly created ticket into their tickets array
             try {
-                await User.findOneAndUpdate( {_id: req.body.user}, {$push: {tickets: newTicket}})
-                // Send back response with new Ticket
-                return res.status(201).json(newTicket)
+                const user = await User.findOne({_id: req.body.user})
+                if (user) {
+                    await User.findOneAndUpdate( {_id: req.body.user}, {$push: {tickets: newTicket}})
+
+                    // Send back response with new Ticket
+                    return res.status(201).json(newTicket)
+                } else {
+                    return res.status(400).json({message: "Specified user ID doesn't exist"})
+                }
+
             }  catch(err) {
                 console.log(err)
                 res.status(400).json({message: "Ticket was created, but couldn't be related to a User", error: err})
@@ -55,7 +61,7 @@ const createTicket = asyncHandler(async(req, res) => {
         }
     } catch(err) {
         console.log(err)
-        res.status(400).json({message: "Unable to create album", error: err})
+        res.status(400).json({message: "Unable to create ticket", error: err})
     }
 })
 

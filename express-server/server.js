@@ -26,7 +26,6 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(('/', require("./routes/root.js")))
 app.use('/users', require('./routes/user.routes'))
 app.use('/tickets', require('./routes/ticket.routes'))
-
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
@@ -37,6 +36,7 @@ app.all('*', (req, res) => {
         res.type('text').send('404 Not Found')
     }
 })
+
 // If errors occur within middleware, handle them appropriately
 app.use(errorHandler)
 
