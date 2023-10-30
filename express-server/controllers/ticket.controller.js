@@ -112,7 +112,7 @@ const removeTicket = asyncHandler(async(req, res) => {
     }
 
     const result = await ticket.deleteOne()
-    const reply = `Ticket ${result.title} with ID ${result._id}`
+    const reply = `Ticket ${result.title} with ID ${result._id} has been deleted successfully`
     res.json(reply)
 })
 
