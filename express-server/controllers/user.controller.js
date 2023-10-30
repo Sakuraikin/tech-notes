@@ -43,6 +43,7 @@ const createUser = asyncHandler(async (req, res) => {
     if (newUser) {
         return res.status(201).json({message: `New user ${username} created`,
         user: {
+            id: newUser._id,
             username: newUser.username,
             roles: newUser.roles,
             createdAt: new Date(newUser.createdAt).toLocaleString()

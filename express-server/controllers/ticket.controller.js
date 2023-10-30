@@ -69,9 +69,11 @@ const createTicket = asyncHandler(async(req, res) => {
 // @access Private
 const updateTicket = asyncHandler(async(req, res) => {
     const { id, user, title, body, isComplete } = req.body
-    if (!id || typeof isComplete !== 'boolean') {
-        return res.status(400).json({message: "All ticket fields are required"})
-    }
+    // !!!!!!!!
+    // ToDo: Move validations from Ticket model to Ticket controller
+    // if (!id || typeof isComplete !== 'boolean') {
+    //     return res.status(400).json({message: "All ticket fields are required"})
+    // }
 
     // Ensure that ticket exists before trying to update
     const ticket = await Ticket.findById(id).exec()
