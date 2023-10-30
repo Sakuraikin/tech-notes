@@ -23,7 +23,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createUser = asyncHandler(async (req, res) => {
-    const { username, password, roles } = req.body
+    const { username, password } = req.body
     
     // VALIDATIONS
     validator.username(username, res)
