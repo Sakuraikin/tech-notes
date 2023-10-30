@@ -98,22 +98,41 @@ const updateTicket = asyncHandler(async(req, res) => {
     res.status(200).json({message: `${updatedTicket.title} updated successfully`, updatedTicket})
 })
 
+
 // @desc Delete ticket
 // @route DELETE /tickets
-// @access Private
+// @access Private 
 const removeTicket = asyncHandler(async(req, res) => {
-    const { id } = req.body
-    if (!id) {
-        return res.status(400).json({message: "Ticket ID is required"})
-    }
-    const ticket = await Ticket.findById(id).exec()
-    if (!ticket) {
-        return res.status(400).json({message: "Ticket not found"})
-    }
+    try {
+        // Pull id from request body
+        const { id } = req.body
 
-    const result = await ticket.deleteOne()
-    const reply = `Ticket ${result.title} with ID ${result._id} has been deleted successfully`
-    res.json(reply)
+        // Only attempt to fetch ticket if id is provided
+        if (id) {
+            const ticket = await Ticket.findById(id)
+
+            // If ticket is found, remove it's reference from the user's tickets array
+            if (ticket) {
+                await User.findOneAndUpdate({_id: ticket.user},
+                    {$pull: {
+                        tickets: ticket._id
+                    }})
+
+                // Delete ticket
+                const result = await ticket.deleteOne()
+                const reply = `Ticket "${result.title}" with ID ${result._id} has been deleted successfully`
+                res.status(200).json(reply)
+            } else {
+                // If ticket id is provided but no match is found
+                return res.status(400).json({message: "Ticket not found"})
+            }
+        } else {
+            // If no ticket id is provided
+            return res.status(400).json({message: "Ticket ID is required"})
+        }
+    } catch(err) {
+        console.log(err)
+    }
 })
 
 module.exports = {
