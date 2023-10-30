@@ -36,13 +36,15 @@ const createUser = asyncHandler(async (req, res) => {
         return res.status(409).json({message: "Username already exists. Please log in to continue."})
     }
 
+    // Create new user
     const newUser = await User.create({ username, password, roles })
 
+    // Send 201 response with newUser if user was successfully created, 400 otherwise
     if (newUser) {
-        res.status(201).json({message: `New user ${username} created`, newUser
+        return res.status(201).json({message: `New user ${username} created`, newUser
     })
     } else {
-        res.status(400).json({message: "User could not be created"})
+    res.status(400).json({message: "User could not be created"})
     }
 })
 
@@ -60,9 +62,10 @@ const updateUser = asyncHandler(async (req, res) => {
     validator.roles(roles, res)
     validator.isActive(isActive, res)
 
-
+    // Retrieve user from req.body.id
     const user = await User.findById(id).exec()
 
+    // If user can't be found, respond with 400 bad req
     if (!user) {
         return res.status(400).json({message: "Specified user doesn't exist"})
     }
@@ -75,13 +78,16 @@ const updateUser = asyncHandler(async (req, res) => {
         return res.status(409).json({message: "Someone else is using that username. Please try again."})
     }
 
+    // set user fields to the values in req.body
     user.username = username
+    user.password = password
     user.roles = roles
     user.isActive = isActive
-    user.password = password
 
+    // Save updated user
     const updatedUser = await user.save()
 
+    // Send response
     res.status(200).json({message: `${updatedUser.username} updated successfully`, updatedUser})
 })
 
@@ -90,24 +96,29 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route DELETE /users
 // @access Private
 const removeUser = asyncHandler(async (req, res) => {
+    // Pull user ID from req.body
     const { id } = req.body
-    if (!id) {
-        return res.status(400).json({message: "User ID is required"})
-    }
+
+    // validate user ID
+    validator.id(id, res)
+
+    // If user has any tickets assined, pull one
     const ticket = await Ticket.findOne({
         user: id
     }).lean().exec()
 
+    // If tickets exist for user, reject DELETE request
     if (ticket) {
         return res.status(400).json({message: "Unable to delete users with open tickets assigned"})
     }
 
+    // Ensure user exists before proceeding with delete
     const user = await User.findById(id).exec()
-
     if (!user) {
         return res.status(400).json({message: "User not found"})
     }
 
+    // Delete user and send reply
     const result = await user.deleteOne()
     const reply = `Username ${result.username} deleted successfully`
     res.status(200).json(reply)
