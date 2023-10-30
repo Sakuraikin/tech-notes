@@ -40,12 +40,11 @@ const createTicket = asyncHandler(async(req, res) => {
                 }
             }})
         } else {
-            const newTicket = await Ticket.create(req.body)
-
             // Update user's tickets by pushing newly created ticket into their tickets array
             try {
                 const user = await User.findOne({_id: req.body.user})
                 if (user) {
+                    const newTicket = await Ticket.create(req.body)
                     await User.findOneAndUpdate( {_id: req.body.user}, {$push: {tickets: newTicket}})
 
                     // Send back response with new Ticket
@@ -119,7 +118,6 @@ const removeTicket = asyncHandler(async(req, res) => {
 
 module.exports = {
     getAllTickets,
-    // createNewTicket,
     updateTicket,
     removeTicket,
     createTicket
