@@ -45,7 +45,7 @@ const createUser = asyncHandler(async (req, res) => {
         user: {
             username: newUser.username,
             roles: newUser.roles,
-            createdAt: newUser.createdAt
+            createdAt: new Date(newUser.createdAt).toLocaleString()
         }
     })
     } else {
