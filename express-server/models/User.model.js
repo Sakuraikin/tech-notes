@@ -4,22 +4,16 @@ const bcrypt = require('bcrypt')
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: [true, "Last name is required"],
-        minLength: [8, "Username must be at least 8 characters"]
     },
     password: {
-        type: String,
-        required: [true, "Password is required"],
-        minLength: [12, "Password must be at least 12 characters"]
+        type: String
     },
     roles: {
         type: [String],
-        required: [true, "User must have at least one role assigned"],
         default: ["employee"]
     },
     isActive: {
         type: Boolean,
-        required: [true, "User must have an isActive status assigned"],
         default: true
     },
     tickets: [{

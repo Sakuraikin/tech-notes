@@ -4,6 +4,7 @@ const Ticket = require('../models/Ticket.model')
 // const bcrypt = require('bcrypt')
 // const jsonWebToken = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
+const validator = require('../validations/user.validations')
 
 
 // @desc Get all users
@@ -23,9 +24,11 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @access Private
 const createUser = asyncHandler(async (req, res) => {
     const { username, password, roles } = req.body
-
-    // Confirm Data
-    // ! Validations already built into mongoose model
+    
+    // VALIDATIONS
+    validator.username(username, res)
+    validator.password(password, res)
+    validator.roles(roles, res)
     
     // Ensure user doesn't already exist
     const potentialUser = await User.findOne({username}).lean().exec()
@@ -33,20 +36,10 @@ const createUser = asyncHandler(async (req, res) => {
         return res.status(409).json({message: "Username already exists. Please log in to continue."})
     }
 
-    // Hash password before sending
-    // ! Password hashing built into mongoose model ( .pre() middleware )
-
     const newUser = await User.create({ username, password, roles })
 
     if (newUser) {
-        res.status(201).json({message: `New user ${username} created`,
-        createdUser: {
-            id: newUser._id,
-            username: newUser.username,
-            roles: newUser.roles,
-            isActive: newUser.isActive,
-            createdAt: newUser.createdAt
-        }
+        res.status(201).json({message: `New user ${username} created`, newUser
     })
     } else {
         res.status(400).json({message: "User could not be created"})
@@ -58,12 +51,15 @@ const createUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    const { id, username, roles, isActive, password } = req.body
+    const { id, username, password, roles, isActive } = req.body
 
-    // Validate data that isn't already validated in mongoose model
-    if (!id || !Array.isArray(roles) || !roles.length || typeof isActive !== 'boolean'){
-        return res.status(400).json({message: "All fields are required"})
-    }
+    // Validate update data
+    validator.id(id, res)
+    validator.username(username, res)
+    validator.password(password, res)
+    validator.roles(roles, res)
+    validator.isActive(isActive, res)
+
 
     const user = await User.findById(id).exec()
 
