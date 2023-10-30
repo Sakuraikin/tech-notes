@@ -23,7 +23,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createUser = asyncHandler(async (req, res) => {
-    const { username, password, roles } = req.body
+    const { username, password } = req.body
     
     // VALIDATIONS
     validator.username(username, res)
@@ -37,7 +37,7 @@ const createUser = asyncHandler(async (req, res) => {
     }
 
     // Create new user
-    const newUser = await User.create({ username, password, roles })
+    const newUser = await User.create(req.body)
 
     // Send 201 response with newUser if user was successfully created, 400 otherwise
     if (newUser) {
