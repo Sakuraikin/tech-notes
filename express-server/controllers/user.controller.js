@@ -28,7 +28,7 @@ const createUser = asyncHandler(async (req, res) => {
     // VALIDATIONS
     validator.username(username, res)
     validator.password(password, res)
-    validator.roles(roles, res)
+    // validator.roles(roles, res)
     
     // Ensure user doesn't already exist
     const potentialUser = await User.findOne({username}).lean().exec()
@@ -59,7 +59,7 @@ const updateUser = asyncHandler(async (req, res) => {
     validator.id(id, res)
     validator.username(username, res)
     validator.password(password, res)
-    validator.roles(roles, res)
+    // validator.roles(roles, res)
     validator.isActive(isActive, res)
 
     // Retrieve user from req.body.id

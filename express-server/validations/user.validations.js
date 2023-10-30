@@ -23,13 +23,13 @@ const password = (password, res) => {
 }
 
 // Roles
-const roles = (roles, res) => {
-    if (!Array.isArray(roles) || roles.length < 1) {
-        return res.status(400).json({message: "User must have at least 1 role assigned"})
-    } else {
-        return true
-    }
-}
+// const roles = (roles, res) => {
+//     if (!Array.isArray(roles)) {
+//         return res.status(400).json({message: "Roles should be an array of strings"})
+//     } else {
+//         return true
+//     }
+// }
 
 // isActive
 const isActive = (isActive, res) => {
@@ -52,7 +52,7 @@ const id = (id, res) => {
 module.exports = {
     username,
     password,
-    roles,
+    // roles,
     isActive,
     id
 }
