@@ -36,6 +36,7 @@ const UserSchema = new mongoose.Schema({
 // Validate that passwords match
 // ! Remember to re-enable confirmPassword validation after form is connected
 // ! confirmPassword is undefined without connected form
+// ToDo: check response code for non-matching confirmPassword values
 // UserSchema.pre('validate', function(next) {
 //     if (this.password !== this.confirmPassword) {
 //         this.invalidate(('confirmPassword', 'Passwords must match'))
@@ -45,7 +46,7 @@ const UserSchema = new mongoose.Schema({
 
 // Hash password and reset password value to hash value before saving
 UserSchema.pre('save', async function(next) {
-    const hash = await bcrypt.hash(this.password, 10)
+    const hash = bcrypt.hash(this.password, 10)
     this.password = hash
     next()
 })
