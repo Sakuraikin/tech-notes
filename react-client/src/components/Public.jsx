@@ -21,6 +21,7 @@ function Public() {
                 <a href="https://www.tictechgo.com"></a>
             </address>
         </main>
+        <footer><Link to='/login'>Login</Link></footer>
     </section>
   )
 }
