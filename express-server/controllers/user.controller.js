@@ -11,10 +11,15 @@ const validator = require('../validations/user.validations')
 // @route GET /users
 // @access Private
 const getAllUsers = asyncHandler(async (req, res) => {
+    // Get all users and their properties, but leave out password
     const allUsers = await User.find().select('-password').lean()
+
+    // If no users in DB, return 400 bad req
     if (!allUsers?.length) {
         return res.status(400).json({message: "No users exist yet"})
     }
+
+    // Send allUsers array with response
     res.json(allUsers)
 })
 
