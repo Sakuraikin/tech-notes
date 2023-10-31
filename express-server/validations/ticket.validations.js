@@ -1,4 +1,4 @@
-// VALIDATIONS
+// TICKET VALIDATIONS
 
 // User
 const user = (user, res) => {
@@ -35,9 +35,28 @@ const body = (body, res) => {
     }
 }
 
+// ID
+const id = (id, res) => {
+    if (!id) {
+        return res.status(400).json({message: "Ticket ID is required"})
+    }
+    else {
+        return true
+    }
+}
+
+// isComplete
+const isComplete = (isComplete, res) => {
+    if (typeof isComplete !== 'boolean') {
+        return res.status(400).json({message: "isComplete must be a boolean value"})
+    } else {
+        return true
+    }
+}
 
 module.exports = {
     user,
     title,
-    body
+    body,
+    id
 }
