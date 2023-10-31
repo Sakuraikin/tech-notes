@@ -58,5 +58,6 @@ module.exports = {
     user,
     title,
     body,
-    id
+    id,
+    isComplete
 }
