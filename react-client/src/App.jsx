@@ -1,6 +1,7 @@
 // import CSS and components here
 import { Routes, Route } from 'react-router-dom'
-import Public from './components/Public';
+import Public from './components/Public'
+import Login from './components/Login'
 
 const App = () => {
   return (
