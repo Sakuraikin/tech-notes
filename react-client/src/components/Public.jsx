@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 
 function Public() {
   return (
-    <section className='public'></section>
+    <section className='public'>
+        
+    </section>
   )
 }
 
