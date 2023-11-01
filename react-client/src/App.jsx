@@ -2,6 +2,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Public from './components/Public'
 import Login from './components/Login'
+import DashLayout from './components/DashLayout'
 
 const App = () => {
   return (
