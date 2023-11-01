@@ -16,6 +16,17 @@ const App = () => {
       <Route path='/dash' element={<DashLayout />}>
         // ToDo: Components for protected routes go here
         <Route index element={<Welcome />} />
+
+        <Route path='/tickets'>
+          <Route index element={<TicketsList />} />
+        </Route>
+
+
+        <Route path='/users'>
+          <Route index element={<UsersList />} />
+        </Route>
+
+
       </Route> 
         
     </Routes>
