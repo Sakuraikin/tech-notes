@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import DashHeader from './DashHeader'
+import DashFooter from './DashFooter'
 
 const DashLayout = () => {
   return (
@@ -7,6 +8,7 @@ const DashLayout = () => {
         <div className="dash-container">
             <Outlet />
         </div>
+        <DashFooter />
     </>
   )
 }
