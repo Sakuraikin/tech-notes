@@ -4,6 +4,8 @@ import Public from './components/Public'
 import Login from './features/auth/Login'
 import DashLayout from './components/DashLayout'
 import Welcome from './features/auth/Welcome'
+import TicketsList from './features/tickets/TicketsList'
+import UsersList from './features/users/UsersList'
 
 const App = () => {
   return (
