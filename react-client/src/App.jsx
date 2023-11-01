@@ -6,6 +6,7 @@ import DashLayout from './components/DashLayout'
 import Welcome from './features/auth/Welcome'
 import TicketsList from './features/tickets/TicketsList'
 import UsersList from './features/users/UsersList'
+import Layout from './components/Layout'
 
 const App = () => {
   return (
@@ -17,17 +18,17 @@ const App = () => {
         // ToDo: Components for protected routes go here
         <Route index element={<Welcome />} />
 
-        <Route path='/tickets'>
+        <Route path='tickets'>
           <Route index element={<TicketsList />} />
         </Route>
 
 
-        <Route path='/users'>
+        <Route path='users'>
           <Route index element={<UsersList />} />
         </Route>
 
 
-      </Route> 
+      </Route> {/* End /dash protected route */}
         
     </Routes>
   );
