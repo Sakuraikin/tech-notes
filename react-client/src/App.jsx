@@ -10,7 +10,9 @@ const App = () => {
       <Route path='/' element={<Layout />} />
       <Route index element={<Public />} />
       <Route path='/login' element={<Login />} />
-      <Route path='/dash' element={<DashLayout />} />
+      <Route path='/dash' element={<DashLayout />} 
+        // ToDo: Components for protected routes go here
+      />
     </Routes>
   );
 }
